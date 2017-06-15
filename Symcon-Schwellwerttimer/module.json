@@ -1,0 +1,14 @@
+{
+    "id": "{8795a7aa-de39-43fc-b67d-8ee7e36beed2}",
+    "name": "SchwellwertTimer",
+    "type": 3,
+    "vendor": "prointernet",
+    "aliases":
+    [
+        "SchwellwertTimer"
+    ],  
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "SWT"
+}
