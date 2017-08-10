@@ -2,14 +2,14 @@
 define("PHP_INT_MIN",-2147483648);
 
 class SchwellwertTimer extends IPSModule {
- 
+
 	private $nachlaufzeitAbgelaufen = false;
-	
-    public function Create() 
+
+    public function Create()
 	{
 		// Diese Zeile nicht löschen.
 		parent::Create();
-		
+
 		if(@$this->RegisterPropertyInteger("Sensor") !== false)
 		{
 			$this->RegisterPropertyInteger("Unit", 4);
@@ -20,7 +20,7 @@ class SchwellwertTimer extends IPSModule {
 			$this->RegisterPropertyInteger("Sensor3", 0);
 			$this->RegisterPropertyString("valueOff", "0");
 			$this->RegisterPropertyString("valueOn", "1");
-			$this->RegisterPropertyInteger("instance", $this->InstanceID);	
+			$this->RegisterPropertyInteger("instance", $this->InstanceID);
 		}
 
 		//SetValueScript erstellen
@@ -30,17 +30,17 @@ class SchwellwertTimer extends IPSModule {
 			IPS_SetParent($vid, $this->InstanceID);
 			IPS_SetName($vid, "SetValue");
 			IPS_SetIdent($vid, "SetValueScript");
-			IPS_SetHidden($vid, true);	
+			IPS_SetHidden($vid, true);
 			IPS_SetScriptContent($vid, "<?
 
-if (\$IPS_SENDER == \"WebFront\") 
-{ 
-    SetValue(\$_IPS['VARIABLE'], \$_IPS['VALUE']); 
-} 
+if (\$IPS_SENDER == \"WebFront\")
+{
+    SetValue(\$_IPS['VARIABLE'], \$_IPS['VALUE']);
+}
 
 ?>");
 		}
-		
+
 		//Delay Variable erstellen DelayVar
 		if(@IPS_GetObjectIDByIdent("DelayVar", $this->InstanceID) === false)
 		{
@@ -66,14 +66,14 @@ if (\$IPS_SENDER == \"WebFront\")
 					IPS_SetVariableProfileValues("SWT.Delay", 0, 600, 1);
 					IPS_SetVariableProfileText("SWT.Delay",""," Sek.");
 					//IPS_SetVariableProfileIcon("SWT.Delay", "");
-					
+
 					IPS_SetVariableCustomProfile($vid,"SWT.Delay");
 				}
 			}
 			IPS_SetVariableCustomAction($vid,$svid);
-			SetValue($vid,1);	
+			SetValue($vid,1);
 		}
-		
+
 		//Status Variable erstellen
 		if(@IPS_GetObjectIDByIdent("Status", $this->InstanceID) === false)
 		{
@@ -83,23 +83,23 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetName($vid, "Status");
 			IPS_SetIdent($vid, "Status");
 			IPS_SetPosition($vid,0);
-			if(IPS_VariableProfileExists("~Switch"))
+			if(IPS_VariableProfileExists("Switch"))
 			{
-				IPS_SetVariableCustomProfile($vid,"~Switch");
+				IPS_SetVariableCustomProfile($vid,"Switch");
 			}
 			else
 			{
-				IPS_CreateVariableProfile("~Switch",0);
-				IPS_SetVariableProfileValues("~Switch",0,1,1);
-				IPS_SetVariableProfileAssociation("~Switch",0,"Aus","",-1);
-				IPS_SetVariableProfileAssociation("~Switch",1,"An","",0x00FF00);
-				IPS_SetVariableProfileIcon("~Switch","Power");
-				
-				IPS_SetVariableCustomProfile($vid,"~Switch");
+				IPS_CreateVariableProfile("Switch",0);
+				IPS_SetVariableProfileValues("Switch",0,1,1);
+				IPS_SetVariableProfileAssociation("Switch",0,"Aus","",-1);
+				IPS_SetVariableProfileAssociation("Switch",1,"An","", 0x8000FF);
+				IPS_SetVariableProfileIcon("Switch","Power");
+
+				IPS_SetVariableCustomProfile($vid,"Switch");
 			}
 			IPS_SetVariableCustomAction($vid,$svid);
 		}
-		
+
 		//Status OnChange event
 		if(@IPS_GetObjectIDByIdent("StatusOnChange",$this->InstanceID) === false)
 		{
@@ -112,7 +112,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetEventActive($eid, true);
 			IPS_SetEventScript($eid, "SWT_statusOnChange(". $this->InstanceID .");");
 		}
-		
+
 		//Nachlaufzeit Variable erstellen
 		if(@IPS_GetObjectIDByIdent("NachlaufzeitVariable",$this->InstanceID) === false)
 		{
@@ -138,14 +138,14 @@ if (\$IPS_SENDER == \"WebFront\")
 					IPS_SetVariableProfileValues("SWT.Seconds", 0, 7200, 1);
 					IPS_SetVariableProfileText("SWT.Seconds",""," Sek.");
 					//IPS_SetVariableProfileIcon("SWT.Seconds", "");
-					
+
 					IPS_SetVariableCustomProfile($vid,"SWT.Seconds");
 				}
 			}
 			IPS_SetVariableCustomAction($vid,$svid);
 			SetValue($vid,1);
 		}
-		
+
 		//Nachlaufzeit OnChange
 		if(@IPS_GetObjectIDByIdent("NachlaufzeitOnChange",$this->InstanceID) === false)
 		{
@@ -157,7 +157,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetEventActive($eid, true);
 			IPS_SetEventScript($eid, "SWT_createDelayTimer(". $this->InstanceID .");");
 		}
-		
+
 		//Automatikbutton (ein und ausschalten des moduls)
 		if(@IPS_GetObjectIDByIdent("Automatik",$this->InstanceID) === false)
 		{
@@ -168,20 +168,22 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetIdent($vid, "Automatik");
 			IPS_SetPosition($vid,0);
 			//Profil
-			if(!IPS_VariableProfileExists("SWT.Automatik"))
+			if(!IPS_VariableProfileExists("Switch"))
 			{
-				IPS_CreateVariableProfile("SWT.Automatik",0);
-				IPS_SetVariableProfileValues("SWT.Automatik",0,1,1);
-				IPS_SetVariableProfileAssociation("SWT.Automatik",0,"Aus","",-1);
-				IPS_SetVariableProfileAssociation("SWT.Automatik",1,"An","",0x00FF00);
-				IPS_SetVariableProfileIcon("SWT.Automatik","Keyboard");
+        IPS_CreateVariableProfile("Switch",0);
+				IPS_SetVariableProfileValues("Switch",0,1,1);
+				IPS_SetVariableProfileAssociation("Switch",0,"Aus","",-1);
+				IPS_SetVariableProfileAssociation("Switch",1,"An","", 0x8000FF);
+				IPS_SetVariableProfileIcon("Switch","Power");
+
+				IPS_SetVariableCustomProfile($vid,"Switch");
 			}
-			IPS_SetVariableCustomProfile($vid,"SWT.Automatik");
-			
+			IPS_SetVariableCustomProfile($vid,"Switch");
+
 			IPS_SetVariableCustomAction($vid,$svid);
 			SetValue($vid,false);
 		}
-		
+
 		//Automatik OnChange to off event
 		if(@IPS_GetObjectIDByIdent("TriggerOnChange",$this->InstanceID) === false)
 		{
@@ -195,13 +197,13 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetEventActive($eid, true);
 			IPS_SetEventScript($eid, "SWT_turnOffEverything(". $this->InstanceID .");");
 		}
-		
+
 		//Targets Kategorie erstellen
 		$this->CreateCategoryByIdent($this->InstanceID, "Targets", "Targets");
     }
-	
+
 	//Schwellwert Variable erstellen
-	private function CreateLimitVariable($type,$num = "") 
+	private function CreateLimitVariable($type,$num = "")
 	{
 		if(@IPS_GetObjectIDByIdent("limit$num", $this->InstanceID) === false)
 		{
@@ -217,11 +219,11 @@ if (\$IPS_SENDER == \"WebFront\")
 			{
 				IPS_SetName($vid, "Schwellwert$num");
 			}
-			
+
 			IPS_SetIdent($vid, "limit$num");
 			IPS_SetPosition($vid, 1);
 			IPS_SetVariableCustomAction($vid, $svid);
-			
+
 			if(@IPS_GetObjectIDByIdent("onChangeSchwell$num", $this->InstanceID) === false)
 			{
 				//onchange event
@@ -248,7 +250,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetHidden($eid,true);
 				IPS_SetEventActive($eid, true);
 			}
-			
+
 
 			return $vid;
 		}
@@ -269,7 +271,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			return $vid;
 		}
 	}
-	
+
 	//alle Werte, Timer, etc. zurrücksetzen
 	public function turnOffEverything()
 	{
@@ -279,13 +281,13 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetEventActive($eid, false);
 			IPS_DeleteEvent($eid);
 		}
-		
+
 		if(@IPS_GetObjectIDByIdent("Status", $this->InstanceID) !== false)
 		{
 			$vid = IPS_GetObjectIDByIdent("Status", $this->InstanceID);
 			SetValue($vid, false);
 		}
-		
+
 		if(@IPS_GetObjectIDByIdent("NachlaufTimer", $this->InstanceID) !== false)
 		{
 			$eid = IPS_GetObjectIDByIdent("NachlaufTimer", $this->InstanceID);
@@ -296,14 +298,14 @@ if (\$IPS_SENDER == \"WebFront\")
 		///////////////////
 		// Profilbereich //
 		///////////////////
-		
+
 		private function createVariableProfile($num = "")
 		{
 			switch($this->ReadPropertyInteger("Unit$num"))
 			{
 				case(1 /*°C*/):
 					$vid = $this->CreateLimitVariable(1 /* integer */,$num);
-				
+
 					if(!IPS_VariableProfileExists("SWT.DegreeCelsius"))
 					{
 					IPS_CreateVariableProfile("SWT.DegreeCelsius", 1);
@@ -315,7 +317,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					break;
 				case(2 /*°F*/):
 					$vid = $this->CreateLimitVariable(1 /* integer */,$num);
-				
+
 					if(!IPS_VariableProfileExists("SWT.DegreeFahrenheit"))
 					{
 					IPS_CreateVariableProfile("SWT.DegreeFahrenheit", 1);
@@ -327,7 +329,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					break;
 				case(3 /*Lux*/):
 					$vid = $this->CreateLimitVariable(1 /* integer */,$num);
-				
+
 					if(!IPS_VariableProfileExists("SWT.Lux"))
 					{
 					IPS_CreateVariableProfile("SWT.Lux", 1);
@@ -373,7 +375,7 @@ if (\$IPS_SENDER == \"WebFront\")
 								}
 								throw new Exception($error);
 							}
-							catch (Exception $e) 
+							catch (Exception $e)
 							{
 								echo 'Caught exception: ',  $e->getMessage(), "\n";
 							}
@@ -382,7 +384,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					break;
 				case(5 /*Watt*/):
 					$vid = $this->CreateLimitVariable(1 /* integer */,$num);
-				
+
 					if(!IPS_VariableProfileExists("SWT.Watt"))
 					{
 					IPS_CreateVariableProfile("SWT.Watt", 1);
@@ -396,7 +398,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					$unit = $this->ReadPropertyInteger("Unit");
 					try
 					{
-						
+
 						$error = "\nInvalid Unit Index: $unit\n";
 						$error .= "1: Degree (°C)\n";
 						$error .= "2: Degree (°F)\n";
@@ -404,15 +406,15 @@ if (\$IPS_SENDER == \"WebFront\")
 						$error .= "4: Same as Sensor\n";
 						$error .= "5: Watt";
 						throw new Exception($error);
-						
+
 					}
-					catch (Exception $e) 
+					catch (Exception $e)
 					{
 						echo 'Caught exception: ',  $e->getMessage(), "\n";
 					}
 			}
 		}
- 
+
 		private function createSensorEvent($num = "")
 		{
 			if(@IPS_GetObjectIDByIdent("onChangeSensor$num",$this->InstanceID) === false)
@@ -440,13 +442,13 @@ if (\$IPS_SENDER == \"WebFront\")
 				}
 			}
 		}
- 
+
 		// Überschreibt die intere IPS_ApplyChanges($id) Funktion
-        public function ApplyChanges() 
+        public function ApplyChanges()
 		{
             // Diese Zeile nicht löschen
             parent::ApplyChanges();
-			
+
 			//onchange event Sensor
 			$this->createSensorEvent();
 
@@ -473,14 +475,14 @@ if (\$IPS_SENDER == \"WebFront\")
 			{
 				$this->createVariableProfile("3");
 			}
-			
+
 			//////////////////
 			// Logikbereich //
 			//////////////////
-			
+
 			//$tid = $this->RegisterTimer("Update", 1000 /*jede sekunde*/, "SWT_refreshStatus(". $this->InstanceID .");");
         }
- 
+
 		/**
         * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
         * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
@@ -505,7 +507,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				$lid3 = (int) $lid3;
 				$statusID = IPS_GetObjectIDByIdent("Status", $this->InstanceID);
 				$ntID = IPS_GetObjectIDByIdent("NachlaufzeitVariable", $this->InstanceID);
-				
+
 				//limits
 				try
 				{
@@ -517,10 +519,10 @@ if (\$IPS_SENDER == \"WebFront\")
 				}
 				if($sid2 >= 10000)
 					$limit2 = GetValue($lid2);
-				else 
+				else
 					$limit2 = PHP_INT_MIN;
-				if($sid3 >= 10000) 
-					$limit3 = GetValue($lid3); 
+				if($sid3 >= 10000)
+					$limit3 = GetValue($lid3);
 				else
 					$limit3 = PHP_INT_MIN;
 				//sensors
@@ -534,13 +536,13 @@ if (\$IPS_SENDER == \"WebFront\")
 				}
 				if($sid2 >= 10000)
 					$sensor2 = GetValue($sid2);
-				else 
+				else
 					$sensor2 = PHP_INT_MAX;
-				if($sid3 >= 10000) 
-					$sensor3 = GetValue($sid3); 
+				if($sid3 >= 10000)
+					$sensor3 = GetValue($sid3);
 				else
 					$sensor3 = PHP_INT_MAX;
-				
+
 				$nachlaufzeit = GetValue($ntID);
 				//format timestamp
 				if(IPS_VariableProfileExists("~UnixTimestampTime"))
@@ -571,7 +573,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					}
 					IPS_SetEventCyclic($eid, 0 /* Keine Datumsüberprüfung */, 0, 0, 2, 1 /* Sekündlich */ , $delay);
 					IPS_SetEventActive($eid, true);
-					
+
 					if(@IPS_GetObjectIDByIdent("NachlaufTimer", $this->InstanceID) !== false)
 					{
 						$eid = IPS_GetObjectIDByIdent("NachlaufTimer", $this->InstanceID);
@@ -579,7 +581,7 @@ if (\$IPS_SENDER == \"WebFront\")
 						IPS_SetEventCyclic($eid, 0 /* Keine Datumsüberprüfung */, 0, 0, 2, 1 /* Sekündlich */ , $nachlaufzeit + $delay /*Minuten zu Sekunden*/ /* Alle 2 Minuten */);
 						IPS_SetEventActive($eid, true);
 						IPS_SetHidden($eid,false);
-					}	
+					}
 				}
 				else
 				{
@@ -613,7 +615,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					{
 						$this->nachlaufzeitAbgelaufen = true;
 					}
-					
+
 					if($this->nachlaufzeitAbgelaufen == true)
 					{
 						$_IPS['SELF'] = "WebFront";
@@ -634,8 +636,8 @@ if (\$IPS_SENDER == \"WebFront\")
 				return $eid;
 			}
 		}
-		
-        public function refreshStatus() 
+
+        public function refreshStatus()
 		{
 			if(@IPS_GetObjectIDByIdent("DelayTimer", $this->InstanceID) !== false)
 			{
@@ -643,12 +645,12 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetEventActive($dtid,false);
 				IPS_DeleteEvent($dtid);
 			}
-			
+
 			$instance = $this->ReadPropertyInteger("instance");
 			$automatik = IPS_GetObjectIDByIdent("Automatik",$instance);
 			$automatik = GetValue($automatik);
 			if($automatik)
-			{	
+			{
 				$sid = $this->ReadPropertyInteger("Sensor");
 				$sid2 = $this->ReadPropertyInteger("Sensor2");
 				$sid3 =$this->ReadPropertyInteger("Sensor3");
@@ -657,7 +659,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				$lid3 = @IPS_GetObjectIDByIdent("limit3", $this->InstanceID);
 				$statusID = IPS_GetObjectIDByIdent("Status", $this->InstanceID);
 				$ntID = IPS_GetObjectIDByIdent("NachlaufzeitVariable", $this->InstanceID);
-				
+
 				//limits
 				try
 				{
@@ -669,10 +671,10 @@ if (\$IPS_SENDER == \"WebFront\")
 				}
 				if($sid2 >= 10000)
 					$limit2 = GetValue($lid2);
-				else 
+				else
 					$limit2 = PHP_INT_MIN;
-				if($sid3 >= 10000) 
-					$limit3 = GetValue($lid3); 
+				if($sid3 >= 10000)
+					$limit3 = GetValue($lid3);
 				else
 					$limit3 = PHP_INT_MIN;
 				//sensors
@@ -686,13 +688,13 @@ if (\$IPS_SENDER == \"WebFront\")
 				}
 				if($sid2 >= 10000)
 					$sensor2 = GetValue($sid2);
-				else 
+				else
 					$sensor2 = PHP_INT_MAX;
-				if($sid3 >= 10000) 
-					$sensor3 = GetValue($sid3); 
+				if($sid3 >= 10000)
+					$sensor3 = GetValue($sid3);
 				else
 					$sensor3 = PHP_INT_MAX;
-				
+
 				$nachlaufzeit = GetValue($ntID);
 				//format timestamp
 				if(IPS_VariableProfileExists("~UnixTimestampTime"))
@@ -703,7 +705,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				if($limit < $sensor && $limit2 < $sensor2 && $limit3 < $sensor3) //Above limit
 				{
 					$_IPS['SELF'] = "WebFront";
-					SetValue($statusID,1);	
+					SetValue($statusID,1);
 
 					if(@IPS_GetObjectIDByIdent("NachlaufTimer", $this->InstanceID) === false)
 					{
@@ -722,7 +724,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					IPS_SetEventCyclic($eid, 0 /* Keine Datumsüberprüfung */, 0, 0, 2, 1 /* Sekündlich */ , $nachlaufzeit /*Minuten zu Sekunden*/ /* Alle 2 Minuten */);
 					IPS_SetEventActive($eid, true);
 					IPS_SetHidden($eid,false);
-					
+
 					$this->nachlaufzeitAbgelaufen = false;
 				}
 				else //Below limit
@@ -744,7 +746,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					{
 						$this->nachlaufzeitAbgelaufen = true;
 					}
-					
+
 					if($this->nachlaufzeitAbgelaufen == true)
 					{
 						$_IPS['SELF'] = "WebFront";
@@ -754,18 +756,18 @@ if (\$IPS_SENDER == \"WebFront\")
 			}
 			return $_IPS['SELF'];
         }
-		
+
 		public function nachlaufzeitAbgelaufen()
 		{
 			$this->nachlaufzeitAbgelaufen = true;
-			
+
 			$eid = IPS_GetObjectIDByIdent("NachlaufTimer", $this->InstanceID );
 			IPS_SetHidden($eid,true);
 			IPS_SetEventActive($eid,false);
 			IPS_Sleep(100);
 			$this->refreshStatus();
 		}
-		
+
 		public function statusOnChange()
 		{
 			$vid = IPS_GetObjectIDByIdent("Status", $this->InstanceID);
@@ -779,38 +781,38 @@ if (\$IPS_SENDER == \"WebFront\")
 			{
 				$value = $this->ReadPropertyString("valueOff");
 			}
-			
-			foreach(IPS_GetChildrenIDs($targets) as $target) 
+
+			foreach(IPS_GetChildrenIDs($targets) as $target)
 			{
 				/*only allow links*/
-				if(IPS_LinkExists($target)) 
+				if(IPS_LinkExists($target))
 				{
 					$linkVariableID = IPS_GetLink($target)['TargetID'];
-					if(IPS_VariableExists($linkVariableID)) 
+					if(IPS_VariableExists($linkVariableID))
 					{
 						$type = IPS_GetVariable($linkVariableID)['VariableType'];
 						$id = $linkVariableID;
-						
+
 						$o = IPS_GetObject($id);
 						$v = IPS_GetVariable($id);
-						
+
 						if($v['VariableType'] == 0)
 						{
 							$value = (bool) $value;
 						}
-						
+
 						if($v["VariableCustomAction"] > 0)
 							$actionID = $v["VariableCustomAction"];
 						else
 							$actionID = $v["VariableAction"];
-						
+
 						/*Skip this device if we do not have a proper id*/
 							if($actionID < 10000)
 							{
 								SetValue($id,$value);
 								continue;
 							}
-						if(IPS_InstanceExists($actionID)) 
+						if(IPS_InstanceExists($actionID))
 						{
 							IPS_RequestAction($actionID, $o["ObjectIdent"], $value);
 						}
@@ -822,8 +824,8 @@ if (\$IPS_SENDER == \"WebFront\")
 				}
 			}
 		}
-		
-		private function CreateCategoryByIdent($id, $ident, $name) 
+
+		private function CreateCategoryByIdent($id, $ident, $name)
 		{
 			$cid = @IPS_GetObjectIDByIdent($ident, $id);
 			if($cid === false) {
