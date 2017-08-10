@@ -92,7 +92,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_CreateVariableProfile("Switch",0);
 				IPS_SetVariableProfileValues("Switch",0,1,1);
 				IPS_SetVariableProfileAssociation("Switch",0,"Aus","",-1);
-				IPS_SetVariableProfileAssociation("Switch",1,"An","",DA00FF);
+				IPS_SetVariableProfileAssociation("Switch",1,"An","", 0x8000FF);
 				IPS_SetVariableProfileIcon("Switch","Power");
 
 				IPS_SetVariableCustomProfile($vid,"Switch");
