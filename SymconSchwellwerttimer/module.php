@@ -168,15 +168,17 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetIdent($vid, "Automatik");
 			IPS_SetPosition($vid,0);
 			//Profil
-			if(!IPS_VariableProfileExists("SWT.Automatik"))
+			if(!IPS_VariableProfileExists("Switch"))
 			{
-				IPS_CreateVariableProfile("SWT.Automatik",0);
-				IPS_SetVariableProfileValues("SWT.Automatik",0,1,1);
-				IPS_SetVariableProfileAssociation("SWT.Automatik",0,"Aus","",-1);
-				IPS_SetVariableProfileAssociation("SWT.Automatik",1,"An","",0x00FF00);
-				IPS_SetVariableProfileIcon("SWT.Automatik","Keyboard");
+        IPS_CreateVariableProfile("Switch",0);
+				IPS_SetVariableProfileValues("Switch",0,1,1);
+				IPS_SetVariableProfileAssociation("Switch",0,"Aus","",-1);
+				IPS_SetVariableProfileAssociation("Switch",1,"An","", 0x8000FF);
+				IPS_SetVariableProfileIcon("Switch","Power");
+
+				IPS_SetVariableCustomProfile($vid,"Switch");
 			}
-			IPS_SetVariableCustomProfile($vid,"SWT.Automatik");
+			IPS_SetVariableCustomProfile($vid,"Switch");
 
 			IPS_SetVariableCustomAction($vid,$svid);
 			SetValue($vid,false);
