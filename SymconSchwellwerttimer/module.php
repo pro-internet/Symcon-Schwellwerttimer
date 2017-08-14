@@ -471,9 +471,26 @@ if (\$IPS_SENDER == \"WebFront\")
 			{
 				$this->createVariableProfile("2");
 			}
+			else
+			{
+				if(@IPS_GetObjectIDByIdent("limit2", $this->InstanceID) !== false)
+				{
+					$limitVar2 = IPS_GetObjectIDByIdent("limit2", $this->InstanceID);
+					IPS_DeleteVariable($limitVar2);
+				}
+			}
+			
 			if($this->ReadPropertyInteger("Sensor3") >= 10000)
 			{
 				$this->createVariableProfile("3");
+			}
+			else
+			{
+				if(@IPS_GetObjectIDByIdent("limit3", $this->InstanceID) !== false)
+				{
+					$limitVar3 = IPS_GetObjectIDByIdent("limit3", $this->InstanceID);
+					IPS_DeleteVariable($limitVar3);
+				}
 			}
 
 			//////////////////
@@ -481,7 +498,9 @@ if (\$IPS_SENDER == \"WebFront\")
 			//////////////////
 
 			//$tid = $this->RegisterTimer("Update", 1000 /*jede sekunde*/, "SWT_refreshStatus(". $this->InstanceID .");");
-        }
+			$this->createDelayTimer();
+		
+		}
 
 		/**
         * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
