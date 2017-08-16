@@ -473,10 +473,23 @@ if (\$IPS_SENDER == \"WebFront\")
 			}
 			else
 			{
+				//delete Schwellwert 2 var
 				if(@IPS_GetObjectIDByIdent("limit2", $this->InstanceID) !== false)
 				{
 					$limitVar2 = IPS_GetObjectIDByIdent("limit2", $this->InstanceID);
 					IPS_DeleteVariable($limitVar2);
+				}
+				//delete Sensor 2 Event
+				if(@IPS_GetObjectIDByIdent("onChangeSensor2", $this->InstanceID) !== false)
+				{
+					$sensEvent2 = IPS_GetObjectIDByIdent("onChangeSensor2", $this->InstanceID);
+					IPS_DeleteEvent($sensEvent2);
+				}
+				//delete Schwellwert 2 Event
+				if(@IPS_GetObjectIDByIdent("onChangeSchwell2", $this->InstanceID) !== false)
+				{
+					$schwellEvent2 = IPS_GetObjectIDByIdent("onChangeSchwell2", $this->InstanceID);
+					IPS_DeleteEvent($schwellEvent2);
 				}
 			}
 			
@@ -486,10 +499,23 @@ if (\$IPS_SENDER == \"WebFront\")
 			}
 			else
 			{
+				//delete Schwellwert 3 var
 				if(@IPS_GetObjectIDByIdent("limit3", $this->InstanceID) !== false)
 				{
 					$limitVar3 = IPS_GetObjectIDByIdent("limit3", $this->InstanceID);
 					IPS_DeleteVariable($limitVar3);
+				}
+				//delete Sensor 3 Event
+				if(@IPS_GetObjectIDByIdent("onChangeSensor3", $this->InstanceID) !== false)
+				{
+					$sensEvent3 = IPS_GetObjectIDByIdent("onChangeSensor3", $this->InstanceID);
+					IPS_DeleteEvent($sensEvent3);
+				}
+				//delete Schwellwert 3 Event
+				if(@IPS_GetObjectIDByIdent("onChangeSchwell3", $this->InstanceID) !== false)
+				{
+					$schwellEvent3 = IPS_GetObjectIDByIdent("onChangeSchwell3", $this->InstanceID);
+					IPS_DeleteEvent($schwellEvent3);
 				}
 			}
 
