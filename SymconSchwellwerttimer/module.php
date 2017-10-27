@@ -461,7 +461,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			}
 
 			//Change Location of the targets folder
-			if(@IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID)) !== true)
+			if(@IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID)) === false)
 			{
 				$dummyGUID = $this->GetModuleIDByName();
 				$insID = IPS_CreateInstance($dummyGUID);
