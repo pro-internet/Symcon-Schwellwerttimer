@@ -197,9 +197,6 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetEventActive($eid, true);
 			IPS_SetEventScript($eid, "SWT_turnOffEverything(". $this->InstanceID .");");
 		}
-
-		//Targets Kategorie erstellen
-		$this->CreateCategoryByIdent($this->InstanceID, "Targets", "Targets");
     }
 
 	//Schwellwert Variable erstellen
@@ -463,6 +460,30 @@ if (\$IPS_SENDER == \"WebFront\")
 				$this->createSensorEvent("3");
 			}
 
+			//Change Location of the targets folder
+			if(@IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID)) !== true)
+			{
+				$dummyGUID = $this->GetModuleIDByName();
+				$insID = IPS_CreateInstance($dummyGUID);
+				IPS_SetName($insID, "Targets");
+				IPS_SetParent($insID, IPS_GetParent($this->InstanceID));
+				IPS_SetIdent($insID, "Targets");
+			}
+
+			if(@IPS_GetObjectIDByIdent("Targets", $this->InstanceID) !== false)
+			{
+				$cid = IPS_GetObjectIDByIdent("Targets", $this->InstanceID);
+				foreach(IPS_GetChildrenIDs($cid) as $c)
+				{
+					$o = IPS_GetObject($c);
+					$l = IPS_GetLink($c);
+					$content = array_merge($o,$l);
+					$content['ParentID'] = $insID;
+					$this->CreateLink($content);
+				}
+				$this->Del($cid);
+			}
+
 			///////////////////
 			// Profilbereich //
 			///////////////////
@@ -534,7 +555,22 @@ if (\$IPS_SENDER == \"WebFront\")
         *
         * ABC_MeineErsteEigeneFunktion($id);
         *
-        */
+		*/
+		protected function GetModuleIDByName($name = "Dummy Module")
+		{
+			$moduleList = IPS_GetModuleList();
+			$GUID = ""; //init
+			foreach($moduleList as $l)
+			{
+				if(IPS_GetModule($l)['ModuleName'] == $name)
+				{
+					$GUID = $l;
+					break;
+				}
+			}
+			return $GUID;
+		}
+
 		public function createDelayTimer()
 		{
 			$instance = $this->ReadPropertyInteger("instance");
@@ -723,14 +759,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				else
 					$limit3 = PHP_INT_MIN;
 				//sensors
-				try
-				{
-					$sensor = GetValue($sid);
-				}
-				catch(Exception $e)
-				{
-					echo 'can not get Value of Sensor ' . $sid . '\n', $e->GetMessage(), '\n';
-				}
+				$sensor = @GetValue($sid);
 				if($sid2 >= 10000)
 					$sensor2 = GetValue($sid2);
 				else
@@ -817,7 +846,7 @@ if (\$IPS_SENDER == \"WebFront\")
 		{
 			$vid = IPS_GetObjectIDByIdent("Status", $this->InstanceID);
 			$status = GetValue($vid);
-			$targets = IPS_GetObjectIDByIdent("Targets",$this->InstanceID);
+			$targets = IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID));
 			if($status === true /*ON*/)
 			{
 				$value = $this->ReadPropertyString("valueOn");
@@ -868,6 +897,88 @@ if (\$IPS_SENDER == \"WebFront\")
 					}
 				}
 			}
+		}
+
+		protected function Del($id, $bool = false /*Delete associated files along with the objects ?*/)
+		{
+			if(IPS_HasChildren($id))
+			{
+				$childIDs = IPS_GetChildrenIDs($id);
+				foreach($childIDs as $child)
+				{
+					$this->Del($child);
+				}
+				$this->Del($id);
+			}
+			else
+			{
+				$type = IPS_GetObject($id)['ObjectType'];
+				switch($type)
+				{
+					case(0):
+						IPS_DeleteCategory($id);
+						break;
+					case(1):
+						IPS_DeleteInstance($id);
+						break;
+					case(2):
+						IPS_DeleteVariable($id);
+						break;
+					case(3):
+						IPS_DeleteScript($id);
+						break;
+					case(4):
+						IPS_DeleteEvent($id);
+						break;
+					case(5):
+						IPS_DeleteMedia($id, $bool /*dont delete media file along with it*/);
+						break;
+					case(6):
+						IPS_DeleteLink($id);
+				}
+			}
+		}
+
+		protected function CreateLink($content)
+		{
+			/**
+			 * 
+			 * 
+			 * @param <array> $content 
+			 * 
+			 * @return <integer> $LinkID
+			 
+			$content = array("ObjectName" => "LinkName",
+							 "ParentID" => ParentID,
+							 "ObjectIdent" => "Identity",
+							 "TargetID" => TargetID,
+							 "ObjectInfo" => "Info", //optional
+							 "ObjectIsHidden" => Boolean, //optional
+							 "ObjectPosition" => position, //optional
+							 "ObjectIcon" => "Icon" //optional
+							)
+			 */
+			if(@IPS_GetObjectIDByIdent($content["ObjectIdent"], $content["parentID"]) === false)
+			{
+				$id = IPS_CreateLink();
+				IPS_SetName($id, $content['ObjectName']);
+				IPS_SetParent($id, $content['ParentID']);
+				IPS_SetIdent($id, $content['ObjectIdent']);
+				if(array_key_exists("ObjectInfo", $content))
+					IPS_SetInfo($id, $content["ObjectInfo"]);
+				if(array_key_exists("ObjectIsHidden", $content))
+					IPS_SetHidden($id, $content["ObjectIsHidden"]);
+				if(array_key_exists("ObjectPosition", $content))
+					IPS_SetPosition($id, $content["ObjectPosition"]);
+				if(array_key_exists("ObjectIcon", $content))
+					IPS_SetIcon($id, $content["ObjectIcon"]);
+				IPS_SetLinkTargetID($id, $content["TargetID"]);
+			}
+			else
+			{
+				$id = IPS_GetObjectIDByIdent($content["ObjectIdent"], $content["ParentID"]);
+			}
+			return $id;
 		}
 
 		private function CreateCategoryByIdent($id, $ident, $name)
