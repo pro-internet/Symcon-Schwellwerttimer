@@ -856,46 +856,53 @@ if (\$IPS_SENDER == \"WebFront\")
 				$value = $this->ReadPropertyString("valueOff");
 			}
 
-			foreach(IPS_GetChildrenIDs($targets) as $target)
+			if($value != "")
 			{
-				/*only allow links*/
-				if(IPS_LinkExists($target))
+				foreach(IPS_GetChildrenIDs($targets) as $target)
 				{
-					$linkVariableID = IPS_GetLink($target)['TargetID'];
-					if(IPS_VariableExists($linkVariableID))
+					/*only allow links*/
+					if(IPS_LinkExists($target))
 					{
-						$type = IPS_GetVariable($linkVariableID)['VariableType'];
-						$id = $linkVariableID;
-
-						$o = IPS_GetObject($id);
-						$v = IPS_GetVariable($id);
-
-						if($v['VariableType'] == 0)
+						$linkVariableID = IPS_GetLink($target)['TargetID'];
+						if(IPS_VariableExists($linkVariableID))
 						{
-							$value = (bool) $value;
-						}
+							$type = IPS_GetVariable($linkVariableID)['VariableType'];
+							$id = $linkVariableID;
 
-						if($v["VariableCustomAction"] > 0)
-							$actionID = $v["VariableCustomAction"];
-						else
-							$actionID = $v["VariableAction"];
+							$o = IPS_GetObject($id);
+							$v = IPS_GetVariable($id);
 
-						/*Skip this device if we do not have a proper id*/
-							if($actionID < 10000)
+							if($v['VariableType'] == 0)
 							{
-								SetValue($id,$value);
-								continue;
+								$value = (bool) $value;
 							}
-						if(IPS_InstanceExists($actionID))
-						{
-							IPS_RequestAction($actionID, $o["ObjectIdent"], $value);
-						}
-						else if(IPS_ScriptExists($actionID))
-						{
-							echo IPS_RunScriptWaitEx($actionID, Array("VARIABLE" => $id, "VALUE" => $value, "SENDER" => "WebFront"));
+
+							if($v["VariableCustomAction"] > 0)
+								$actionID = $v["VariableCustomAction"];
+							else
+								$actionID = $v["VariableAction"];
+
+							/*Skip this device if we do not have a proper id*/
+								if($actionID < 10000)
+								{
+									SetValue($id,$value);
+									continue;
+								}
+							if(IPS_InstanceExists($actionID))
+							{
+								IPS_RequestAction($actionID, $o["ObjectIdent"], $value);
+							}
+							else if(IPS_ScriptExists($actionID))
+							{
+								echo IPS_RunScriptWaitEx($actionID, Array("VARIABLE" => $id, "VALUE" => $value, "SENDER" => "WebFront"));
+							}
 						}
 					}
 				}
+			}
+			else
+			{
+				IPS_LogMessage("SWT", "The Value was empty, Target remains unchanged");
 			}
 		}
 
