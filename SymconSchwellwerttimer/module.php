@@ -457,8 +457,6 @@ if (\$IPS_SENDER == \"WebFront\")
 			//onchange event Sensor
 			$this->createSensorEvent();
 
-			echo $this->ReadPropertyInteger("scriptOn");
-
 			$vid = $this->ReadPropertyInteger("Sensor2");
 			if($vid >= 10000)
 			{
@@ -864,10 +862,12 @@ if (\$IPS_SENDER == \"WebFront\")
 			if($status === true /*ON*/)
 			{
 				$value = $this->ReadPropertyString("valueOn");
+				$script = $this->ReadPropertyString("scriptOn");
 			}
 			else /*OFF*/
 			{
 				$value = $this->ReadPropertyString("valueOff");
+				$script = $this->ReadPropertyString("scriptOff");
 			}
 
 			if($value != "")
@@ -917,6 +917,16 @@ if (\$IPS_SENDER == \"WebFront\")
 			else
 			{
 				IPS_LogMessage("SWT", "The Value was empty, Target remains unchanged");
+			}
+			if($script > 9999)
+			{
+				$e = @IPS_RunScript($script);
+				if(!$e) 
+					IPS_LogMessage("SWT", "The Script couldn't be run");
+			}
+			else
+			{
+				IPS_LogMessage("SWT", "The ScriptID was invalid, No script was executed");
 			}
 		}
 
