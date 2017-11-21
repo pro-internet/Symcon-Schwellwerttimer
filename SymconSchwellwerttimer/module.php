@@ -3,6 +3,8 @@ define("PHP_INT_MIN",-2147483648);
 
 class SchwellwertTimer extends IPSModule {
 
+	//branch = tests
+
 	private $nachlaufzeitAbgelaufen = false;
 
     public function Create()
