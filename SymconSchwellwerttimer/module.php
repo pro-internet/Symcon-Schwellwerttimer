@@ -862,12 +862,12 @@ if (\$IPS_SENDER == \"WebFront\")
 			if($status === true /*ON*/)
 			{
 				$value = $this->ReadPropertyString("valueOn");
-				$script = $this->ReadPropertyString("scriptOn");
+				$script = $this->ReadPropertyInteger("scriptOn");
 			}
 			else /*OFF*/
 			{
 				$value = $this->ReadPropertyString("valueOff");
-				$script = $this->ReadPropertyString("scriptOff");
+				$script = $this->ReadPropertyInteger("scriptOff");
 			}
 
 			if($value != "")
