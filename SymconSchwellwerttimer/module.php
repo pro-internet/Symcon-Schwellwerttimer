@@ -25,6 +25,12 @@ class SchwellwertTimer extends IPSModule {
 			$this->RegisterPropertyInteger("instance", $this->InstanceID);
 		}
 
+		if(@$this->RegisterPropertyInteger("scriptOn") !== false)
+		{
+			$this->RegisterPropertyInteger("scriptOn", 0);
+			$this->RegisterPropertyInteger("scriptOff", 0);
+		}
+
 		//SetValueScript erstellen
 		if(@IPS_GetObjectIDByIdent("SetValueScript", $this->InstanceID) === false)
 		{
@@ -450,6 +456,8 @@ if (\$IPS_SENDER == \"WebFront\")
 
 			//onchange event Sensor
 			$this->createSensorEvent();
+
+			echo $this->ReadPropertyInteger("scriptOn");
 
 			$vid = $this->ReadPropertyInteger("Sensor2");
 			if($vid >= 10000)
