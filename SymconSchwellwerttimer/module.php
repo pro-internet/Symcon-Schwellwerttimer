@@ -3,6 +3,8 @@ define("PHP_INT_MIN",-2147483648);
 
 class SchwellwertTimer extends IPSModule {
 
+	//branch = master
+
 	private $nachlaufzeitAbgelaufen = false;
 
     public function Create()
@@ -21,6 +23,12 @@ class SchwellwertTimer extends IPSModule {
 			$this->RegisterPropertyString("valueOff", "0");
 			$this->RegisterPropertyString("valueOn", "1");
 			$this->RegisterPropertyInteger("instance", $this->InstanceID);
+		}
+
+		if(@$this->RegisterPropertyInteger("scriptOn") !== false)
+		{
+			$this->RegisterPropertyInteger("scriptOn", 0);
+			$this->RegisterPropertyInteger("scriptOff", 0);
 		}
 
 		//SetValueScript erstellen
@@ -469,6 +477,10 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetParent($insID, IPS_GetParent($this->InstanceID));
 				IPS_SetIdent($insID, "Targets");
 			}
+			else
+			{
+				$insID = IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID));
+			}
 
 			if(@IPS_GetObjectIDByIdent("Targets", $this->InstanceID) !== false)
 			{
@@ -850,10 +862,12 @@ if (\$IPS_SENDER == \"WebFront\")
 			if($status === true /*ON*/)
 			{
 				$value = $this->ReadPropertyString("valueOn");
+				$script = $this->ReadPropertyInteger("scriptOn");
 			}
 			else /*OFF*/
 			{
 				$value = $this->ReadPropertyString("valueOff");
+				$script = $this->ReadPropertyInteger("scriptOff");
 			}
 
 			if($value != "")
@@ -903,6 +917,16 @@ if (\$IPS_SENDER == \"WebFront\")
 			else
 			{
 				IPS_LogMessage("SWT", "The Value was empty, Target remains unchanged");
+			}
+			if($script > 9999)
+			{
+				$e = @IPS_RunScript($script);
+				if(!$e) 
+					IPS_LogMessage("SWT", "The Script couldn't be run");
+			}
+			else
+			{
+				IPS_LogMessage("SWT", "The ScriptID was invalid, No script was executed");
 			}
 		}
 
