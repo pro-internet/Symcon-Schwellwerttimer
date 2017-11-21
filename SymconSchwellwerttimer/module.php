@@ -479,6 +479,10 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetParent($insID, IPS_GetParent($this->InstanceID));
 				IPS_SetIdent($insID, "Targets");
 			}
+			else
+			{
+				$insID = IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID));
+			}
 
 			if(@IPS_GetObjectIDByIdent("Targets", $this->InstanceID) !== false)
 			{
