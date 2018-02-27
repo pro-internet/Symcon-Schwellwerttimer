@@ -3,7 +3,7 @@ define("PHP_INT_MIN",-2147483648);
 
 class SchwellwertTimer extends IPSModule {
 
-	//branch = master
+	//branch = Update
 
 	private $nachlaufzeitAbgelaufen = false;
 
@@ -480,7 +480,10 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetParent($eid, $this->InstanceID);
 				IPS_SetName($eid, "Automatik OnChange");
 				IPS_SetIdent($eid, "AutomatikOnChange");
+<<<<<<< HEAD
+=======
 				IPS_SetEventActive($eid, true);
+>>>>>>> 459c4ce2ec82bcef9ead97cd532aef0c4382f5ae
 			}
 
 			//Change Location of the targets folder
