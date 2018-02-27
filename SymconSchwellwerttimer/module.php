@@ -468,6 +468,20 @@ if (\$IPS_SENDER == \"WebFront\")
 				$this->createSensorEvent("3");
 			}
 
+			//Create on change event for automatik
+			if(@IPS_GetObjectIDByIdent("AutomatikOnChange", $this->InstanceID) === false)
+			{
+				$automatikID = IPS_GetObjectIDByIdent("Automatik", $this->InstanceID);
+				$eid = IPS_CreateEvent(0);
+				IPS_SetEventTrigger($eid, 0, $automatikID);
+				IPS_SetEventScript($eid, "if(GetValue($automatikID) === true) { 
+					SWT_createDelayTimer(". $this->InstanceID ."); 
+				}");
+				IPS_SetParent($eid, $this->InstanceID);
+				IPS_SetName($eid, "Automatik OnChange");
+				IPS_SetIdent($eid, "AutomatikOnChange");
+			}
+
 			//Change Location of the targets folder
 			if(@IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID)) === false)
 			{
