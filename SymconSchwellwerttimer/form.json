@@ -1,39 +1,42 @@
 {
-  "elements":
-  [
-	{ "type": "Label", "label": "Überwachte Objekte" },
-	{ "type": "SelectVariable", "name": "Sensor", "caption": "Sensor1" },
-	{ "type": "Select", "name": "Unit", "caption": "Schwellwert Profil1",
-	"options": [
-			{ "label": "Grad (°C)", "value": "1" },
-			{ "label": "Grad (°F)", "value": "2" },
-			{ "label": "Lux (lx)", "value": "3" },
-			{ "label": "Watt (W)", "value": "5" },
-			{ "label": "Profil des Sensors verwenden", "value": "4" },
-		]
-	},
-	{ "type": "SelectVariable", "name": "Sensor2", "caption": "Sensor2" },
-	{ "type": "Select", "name": "Unit2", "caption": "Schwellwert Profil2",
-	"options": [
-			{ "label": "Grad (°C)", "value": "1" },
-			{ "label": "Grad (°F)", "value": "2" },
-			{ "label": "Lux (lx)", "value": "3" },
-			{ "label": "Watt (W)", "value": "5" },
-			{ "label": "Profil des Sensors verwenden", "value": "4" },
-		]
-	},
-	{ "type": "SelectVariable", "name": "Sensor3", "caption": "Sensor3" },
-	{ "type": "Select", "name": "Unit3", "caption": "Schwellwert Profil3",
-	"options": [
-			{ "label": "Grad (°C)", "value": "1" },
-			{ "label": "Grad (°F)", "value": "2" },
-			{ "label": "Lux (lx)", "value": "3" },
-			{ "label": "Watt (W)", "value": "5" },
-			{ "label": "Profil des Sensors verwenden", "value": "4" },
-		]
-	},
-	{ "type": "Label", "label": "Schwellwert Über- (An) / Unterschreitung (Aus)" },
-	{ "type": "ValidationTextBox", "name": "valueOn", "caption": "An" },
-	{ "type": "ValidationTextBox", "name": "valueOff", "caption": "Aus" }
-  ]
-}
+	"elements":
+	[
+	  { "type": "Label", "label": "Überwachte Objekte" },
+	  { "type": "SelectVariable", "name": "Sensor", "caption": "Sensor1" },
+	  { "type": "Select", "name": "Unit", "caption": "Schwellwert Profil1",
+	  "options": [
+			  { "label": "Grad (°C)", "value": "1" },
+			  { "label": "Grad (°F)", "value": "2" },
+			  { "label": "Lux (lx)", "value": "3" },
+			  { "label": "Watt (W)", "value": "5" },
+			  { "label": "Profil des Sensors verwenden", "value": "4" }
+		  ]
+	  },
+	  { "type": "SelectVariable", "name": "Sensor2", "caption": "Sensor2" },
+	  { "type": "Select", "name": "Unit2", "caption": "Schwellwert Profil2",
+	  "options": [
+			  { "label": "Grad (°C)", "value": "1" },
+			  { "label": "Grad (°F)", "value": "2" },
+			  { "label": "Lux (lx)", "value": "3" },
+			  { "label": "Watt (W)", "value": "5" },
+			  { "label": "Profil des Sensors verwenden", "value": "4" }
+		  ]
+	  },
+	  { "type": "SelectVariable", "name": "Sensor3", "caption": "Sensor3" },
+	  { "type": "Select", "name": "Unit3", "caption": "Schwellwert Profil3",
+	  "options": [
+			  { "label": "Grad (°C)", "value": "1" },
+			  { "label": "Grad (°F)", "value": "2" },
+			  { "label": "Lux (lx)", "value": "3" },
+			  { "label": "Watt (W)", "value": "5" },
+			  { "label": "Profil des Sensors verwenden", "value": "4" }
+		  ]
+	  },
+	  { "type": "Label", "label": "Schwellwert Über- (An) / Unterschreitung (Aus)" },
+	  { "type": "ValidationTextBox", "name": "valueOn", "caption": "An" },
+	  { "type": "ValidationTextBox", "name": "valueOff", "caption": "Aus" },
+	  { "type": "SelectScript", "name": "scriptOn", "caption": "An" },
+	  { "type": "SelectScript", "name": "scriptOff", "caption": "Aus" }
+	]
+  }
+  
