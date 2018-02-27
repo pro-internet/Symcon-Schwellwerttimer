@@ -480,6 +480,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetParent($eid, $this->InstanceID);
 				IPS_SetName($eid, "Automatik OnChange");
 				IPS_SetIdent($eid, "AutomatikOnChange");
+				IPS_SetEventActive($eid, true);
 			}
 
 			//Change Location of the targets folder
