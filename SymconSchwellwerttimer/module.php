@@ -56,6 +56,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			$vid = IPS_CreateVariable(1 /* Integer */);
 			IPS_SetParent($vid, $this->InstanceID);
 			IPS_SetName($vid, "Verzögerung");
+			IPS_SetIcon($vid, "Clock");
 			IPS_SetIdent($vid, "DelayVar");
 			IPS_SetPosition($vid,2);
 			if(IPS_VariableProfileExists("~UnixTimestampTime"))
@@ -738,6 +739,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetName($eid, "Verzögerung OnChange");
 				IPS_SetParent($eid, $this->InstanceID);
 				IPS_SetIdent($eid, "VerzogerungOnChange");
+				IPS_SetIcon($eid, "Clock");
 				IPS_SetEventTrigger($eid,1,$vid);
 				IPS_SetEventScript($eid,"SWT_createDelayTimer(". $this->InstanceID .");");
 				IPS_SetEventActive($eid,true);
