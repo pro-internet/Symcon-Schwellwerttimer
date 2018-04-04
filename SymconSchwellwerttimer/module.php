@@ -488,17 +488,17 @@ if (\$IPS_SENDER == \"WebFront\")
 			}
 
 			//Change Location of the targets folder
-			if(@IPS_GetObjectIDByIdent("Targets", $this->InstanceID) === false)
+			if(@IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID)) === false)
 			{
 				$dummyGUID = $this->GetModuleIDByName();
 				$insID = IPS_CreateInstance($dummyGUID);
 				IPS_SetName($insID, "Targets");
-				IPS_SetParent($insID, $this->InstanceID);
+				IPS_SetParent($insID, IPS_GetParent($this->InstanceID));
 				IPS_SetIdent($insID, "Targets");
 			}
 			else
 			{
-				$insID = IPS_GetObjectIDByIdent("Targets", $this->InstanceID);
+				$insID = IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID));
 			}
 
 			if(@IPS_GetObjectIDByIdent("Targets", $this->InstanceID) !== false)
@@ -879,7 +879,7 @@ if (\$IPS_SENDER == \"WebFront\")
 		{
 			$vid = IPS_GetObjectIDByIdent("Status", $this->InstanceID);
 			$status = GetValue($vid);
-			$targets = IPS_GetObjectIDByIdent("Targets", $this->InstanceID);
+			$targets = IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID));
 			if($status === true /*ON*/)
 			{
 				$value = $this->ReadPropertyString("valueOn");
