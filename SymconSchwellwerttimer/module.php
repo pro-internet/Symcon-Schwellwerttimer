@@ -239,6 +239,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetEventScript($eid,"SWT_createDelayTimer(". $this->InstanceID .");");
 				IPS_SetIdent($eid,"onChangeSchwell$num");
 				IPS_SetName($eid,"onChange Schwellwert$num");
+				IPS_SetIcon($eid, "Sun");
 				IPS_SetParent($eid, $this->InstanceID);
 				IPS_SetHidden($eid,true);
 				IPS_SetEventActive($eid, true);
@@ -254,6 +255,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetIdent($eid,"onChangeSchwell$num");
 				IPS_SetName($eid,"onChange Schwellwert$num");
 				IPS_SetParent($eid, $this->InstanceID);
+				IPS_SetIcon($eid, "Sun");
 				IPS_SetHidden($eid,true);
 				IPS_SetEventActive($eid, true);
 			}
@@ -815,6 +817,7 @@ if (\$IPS_SENDER == \"WebFront\")
 					{
 						$eid = IPS_CreateEvent(1 /*züklisch*/);
 						IPS_SetName($eid, "Timer");
+						IPS_SetIcon($eid, "Clock");
 						IPS_SetParent($eid, $this->InstanceID);
 						IPS_SetIdent($eid, "NachlaufTimer");
 						IPS_SetPosition($eid, 4);
