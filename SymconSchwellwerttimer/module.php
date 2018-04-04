@@ -491,7 +491,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				$dummyGUID = $this->GetModuleIDByName();
 				$insID = IPS_CreateInstance($dummyGUID);
 				IPS_SetName($insID, "Targets");
-				IPS_SetParent($insID, IPS_GetParent($this->InstanceID));
+				IPS_SetParent($insID, $this->InstanceID);
 				IPS_SetIdent($insID, "Targets");
 			}
 			else
