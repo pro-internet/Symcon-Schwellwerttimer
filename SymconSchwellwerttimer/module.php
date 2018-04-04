@@ -129,6 +129,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetParent($vid, $this->InstanceID);
 			IPS_SetName($vid, "Nachlauf");
 			IPS_SetIdent($vid, "NachlaufzeitVariable");
+			IPS_SetIcon($vid, "Clock");
 			IPS_SetPosition($vid, 3);
 			if(IPS_VariableProfileExists("~UnixTimestampTime"))
 			{
@@ -737,6 +738,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				$eid = IPS_CreateEvent(0 /*ausgelöst*/);
 				IPS_SetName($eid, "Verzögerung OnChange");
 				IPS_SetParent($eid, $this->InstanceID);
+				IPS_SetIcon($eid, "Clock");
 				IPS_SetIdent($eid, "VerzogerungOnChange");
 				IPS_SetEventTrigger($eid,1,$vid);
 				IPS_SetEventScript($eid,"SWT_createDelayTimer(". $this->InstanceID .");");
@@ -926,6 +928,23 @@ if (\$IPS_SENDER == \"WebFront\")
 								echo IPS_RunScriptWaitEx($actionID, Array("VARIABLE" => $id, "VALUE" => $value, "SENDER" => "WebFront"));
 							}
 						}
+					} else {
+
+						if(IPS_GetObject($target)['ObjectType'] == 2) {
+
+							$type = IPS_GetVariable($target)['VariableType'];
+
+							$asObject = IPS_GetObject($target);
+							$asVariable = IPS_GetVariable($target);
+
+							if ($asVariable['VariableType'] == 0) {
+
+								SetValue($target, $value);
+
+							}
+
+						}
+
 					}
 				}
 			}
