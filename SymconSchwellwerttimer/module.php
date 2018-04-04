@@ -876,7 +876,7 @@ if (\$IPS_SENDER == \"WebFront\")
 		{
 			$vid = IPS_GetObjectIDByIdent("Status", $this->InstanceID);
 			$status = GetValue($vid);
-			$targets = IPS_GetObjectIDByIdent("Targets", IPS_GetParent($this->InstanceID));
+			$targets = IPS_GetObjectIDByIdent("Targets", $this->InstanceID);
 			if($status === true /*ON*/)
 			{
 				$value = $this->ReadPropertyString("valueOn");
