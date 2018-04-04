@@ -130,6 +130,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetParent($vid, $this->InstanceID);
 			IPS_SetName($vid, "Nachlauf");
 			IPS_SetIdent($vid, "NachlaufzeitVariable");
+			IPS_SetIcon($vid, "Clock");
 			IPS_SetPosition($vid, 3);
 			if(IPS_VariableProfileExists("~UnixTimestampTime"))
 			{
