@@ -926,6 +926,23 @@ if (\$IPS_SENDER == \"WebFront\")
 								echo IPS_RunScriptWaitEx($actionID, Array("VARIABLE" => $id, "VALUE" => $value, "SENDER" => "WebFront"));
 							}
 						}
+					} else {
+
+						if(IPS_GetObject($target)['ObjectType'] == 2) {
+
+							$type = IPS_GetVariable($target)['VariableType'];
+
+							$asObject = IPS_GetObject($target);
+							$asVariable = IPS_GetVariable($target);
+
+							if ($asVariable['VariableType'] == 0) {
+
+								SetValue($target, $value);
+
+							}
+
+						}
+
 					}
 				}
 			}
