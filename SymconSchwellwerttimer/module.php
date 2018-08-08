@@ -163,7 +163,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetName($eid,"Nachlaufzeit OnChange");
 			IPS_SetIdent($eid,"NachlaufzeitOnChange");
 			IPS_SetEventActive($eid, true);
-			IPS_SetEventScript($eid, . "<?php SWT_createDelayTimer(". $this->InstanceID ."); ?>");
+			IPS_SetEventScript($eid, "<?php SWT_createDelayTimer(". $this->InstanceID ."); ?>");
 		}
 
 		//Automatikbutton (ein und ausschalten des moduls)
