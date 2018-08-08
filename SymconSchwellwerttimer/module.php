@@ -1,5 +1,5 @@
 <?
-define("PHP_INT_MIN",-2147483648);
+//define("PHP_INT_MIN",-2147483648);
 
 class SchwellwertTimer extends IPSModule {
 
@@ -118,7 +118,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetName($eid,"Status OnChange");
 			IPS_SetIdent($eid,"StatusOnChange");
 			IPS_SetEventActive($eid, true);
-			IPS_SetEventScript($eid, "SWT_statusOnChange(". $this->InstanceID .");");
+			IPS_SetEventScript($eid, "<?php SWT_statusOnChange(". $this->InstanceID ."); ?>");
 		}
 
 		//Nachlaufzeit Variable erstellen
@@ -163,7 +163,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetName($eid,"Nachlaufzeit OnChange");
 			IPS_SetIdent($eid,"NachlaufzeitOnChange");
 			IPS_SetEventActive($eid, true);
-			IPS_SetEventScript($eid, "SWT_createDelayTimer(". $this->InstanceID .");");
+			IPS_SetEventScript($eid, "<?php SWT_createDelayTimer(". $this->InstanceID ."); ?>");
 		}
 
 		//Automatikbutton (ein und ausschalten des moduls)
@@ -203,7 +203,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetName($eid,"Trigger OnChange");
 			IPS_SetIdent($eid,"TriggerOnChange");
 			IPS_SetEventActive($eid, true);
-			IPS_SetEventScript($eid, "SWT_turnOffEverything(". $this->InstanceID .");");
+			IPS_SetEventScript($eid, "<?php SWT_turnOffEverything(". $this->InstanceID ."); ?>");
 		}
     }
 
@@ -234,7 +234,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				//onchange event
 				$eid = IPS_CreateEvent(0 /* ausgelößt */);
 				IPS_SetEventTrigger($eid,1,$vid);
-				IPS_SetEventScript($eid,"SWT_createDelayTimer(". $this->InstanceID .");");
+				IPS_SetEventScript($eid,"<?php SWT_createDelayTimer(". $this->InstanceID ."); ?>");
 				IPS_SetIdent($eid,"onChangeSchwell$num");
 				IPS_SetName($eid,"onChange Schwellwert$num");
 				IPS_SetParent($eid, $this->InstanceID);
@@ -248,7 +248,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				//onchange event
 				$eid = IPS_CreateEvent(0 /* ausgelößt */);
 				IPS_SetEventTrigger($eid,1,$vid);
-				IPS_SetEventScript($eid,"SWT_refreshStatus(". $this->InstanceID .");");
+				IPS_SetEventScript($eid,"<?php SWT_refreshStatus(". $this->InstanceID ."); ?>");
 				IPS_SetIdent($eid,"onChangeSchwell$num");
 				IPS_SetName($eid,"onChange Schwellwert$num");
 				IPS_SetParent($eid, $this->InstanceID);
@@ -428,7 +428,7 @@ if (\$IPS_SENDER == \"WebFront\")
 
 				$eid = IPS_CreateEvent(0 /* ausgelößt */);
 				IPS_SetEventTrigger($eid,1,$vid);
-				IPS_SetEventScript($eid,"SWT_createDelayTimer(". $this->InstanceID .");");
+				IPS_SetEventScript($eid,"<?php SWT_createDelayTimer(". $this->InstanceID ."); ?>");
 				IPS_SetIdent($eid,"onChangeSensor$num");
 				IPS_SetName($eid,"onChange Sensor$num");
 				IPS_SetParent($eid, $this->InstanceID);
@@ -474,9 +474,9 @@ if (\$IPS_SENDER == \"WebFront\")
 				$automatikID = IPS_GetObjectIDByIdent("Automatik", $this->InstanceID);
 				$eid = IPS_CreateEvent(0);
 				IPS_SetEventTrigger($eid, 0, $automatikID);
-				IPS_SetEventScript($eid, "if(GetValue($automatikID) === true) { 
+				IPS_SetEventScript($eid, "<?php if(GetValue($automatikID) === true) { 
 					SWT_createDelayTimer(". $this->InstanceID ."); 
-				}");
+				} ?>");
 				IPS_SetParent($eid, $this->InstanceID);
 				IPS_SetName($eid, "Automatik OnChange");
 				IPS_SetIdent($eid, "AutomatikOnChange");
@@ -667,7 +667,7 @@ if (\$IPS_SENDER == \"WebFront\")
 						IPS_SetName($eid, "Delay Timer");
 						IPS_SetParent($eid, $this->InstanceID);
 						IPS_SetIdent($eid, "DelayTimer");
-						IPS_SetEventScript($eid, "SWT_refreshStatus(". $this->InstanceID .");");
+						IPS_SetEventScript($eid, "<?php SWT_refreshStatus(". $this->InstanceID ."); ?>");
 						IPS_SetEventCyclicTimeFrom($eid, (int)date("H"), (int)date("i"), (int)date("s"));
 					}
 					else
@@ -739,7 +739,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				IPS_SetParent($eid, $this->InstanceID);
 				IPS_SetIdent($eid, "VerzogerungOnChange");
 				IPS_SetEventTrigger($eid,1,$vid);
-				IPS_SetEventScript($eid,"SWT_createDelayTimer(". $this->InstanceID .");");
+				IPS_SetEventScript($eid,"<?php SWT_createDelayTimer(". $this->InstanceID ."); ?>");
 				IPS_SetEventActive($eid,true);
 				return $eid;
 			}
@@ -815,7 +815,7 @@ if (\$IPS_SENDER == \"WebFront\")
 						IPS_SetParent($eid, $this->InstanceID);
 						IPS_SetIdent($eid, "NachlaufTimer");
 						IPS_SetPosition($eid, 4);
-						IPS_SetEventScript($eid, "SWT_nachlaufzeitAbgelaufen(". $this->InstanceID .");");
+						IPS_SetEventScript($eid, "<?php SWT_nachlaufzeitAbgelaufen(". $this->InstanceID ."); ?>");
 					}
 					else
 					{
