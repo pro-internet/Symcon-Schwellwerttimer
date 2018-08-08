@@ -118,7 +118,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetName($eid,"Status OnChange");
 			IPS_SetIdent($eid,"StatusOnChange");
 			IPS_SetEventActive($eid, true);
-			IPS_SetEventScript($eid, "SWT_statusOnChange(". $this->InstanceID .");");
+			IPS_SetEventScript($eid, "<?php SWT_statusOnChange(". $this->InstanceID ."); ?>");
 		}
 
 		//Nachlaufzeit Variable erstellen
@@ -203,7 +203,7 @@ if (\$IPS_SENDER == \"WebFront\")
 			IPS_SetName($eid,"Trigger OnChange");
 			IPS_SetIdent($eid,"TriggerOnChange");
 			IPS_SetEventActive($eid, true);
-			IPS_SetEventScript($eid, "SWT_turnOffEverything(". $this->InstanceID .");");
+			IPS_SetEventScript($eid, "<?php SWT_turnOffEverything(". $this->InstanceID ."); ?>");
 		}
     }
 
@@ -248,7 +248,7 @@ if (\$IPS_SENDER == \"WebFront\")
 				//onchange event
 				$eid = IPS_CreateEvent(0 /* ausgelößt */);
 				IPS_SetEventTrigger($eid,1,$vid);
-				IPS_SetEventScript($eid,"SWT_refreshStatus(". $this->InstanceID .");");
+				IPS_SetEventScript($eid,"<?php SWT_refreshStatus(". $this->InstanceID ."); ?>");
 				IPS_SetIdent($eid,"onChangeSchwell$num");
 				IPS_SetName($eid,"onChange Schwellwert$num");
 				IPS_SetParent($eid, $this->InstanceID);
@@ -667,7 +667,7 @@ if (\$IPS_SENDER == \"WebFront\")
 						IPS_SetName($eid, "Delay Timer");
 						IPS_SetParent($eid, $this->InstanceID);
 						IPS_SetIdent($eid, "DelayTimer");
-						IPS_SetEventScript($eid, "SWT_refreshStatus(". $this->InstanceID .");");
+						IPS_SetEventScript($eid, "<?php SWT_refreshStatus(". $this->InstanceID ."); ?>");
 						IPS_SetEventCyclicTimeFrom($eid, (int)date("H"), (int)date("i"), (int)date("s"));
 					}
 					else
@@ -815,7 +815,7 @@ if (\$IPS_SENDER == \"WebFront\")
 						IPS_SetParent($eid, $this->InstanceID);
 						IPS_SetIdent($eid, "NachlaufTimer");
 						IPS_SetPosition($eid, 4);
-						IPS_SetEventScript($eid, "SWT_nachlaufzeitAbgelaufen(". $this->InstanceID .");");
+						IPS_SetEventScript($eid, "<?php SWT_nachlaufzeitAbgelaufen(". $this->InstanceID ."); ?>");
 					}
 					else
 					{
